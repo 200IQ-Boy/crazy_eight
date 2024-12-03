@@ -59,6 +59,7 @@ typedef s_pick* pick;
  */
 card CreateClassicCard(color color,uint number);
 
+
 /**
  * @brief Creates a special card (Jack, Queen, King, Ace).
  *
@@ -82,6 +83,7 @@ card CreateSpeCard(char* name , color color);
 
 void PrintCard(card c);
 
+
 /**
  * @brief 
  * @details Compare two cards and return true if :
@@ -95,13 +97,59 @@ void PrintCard(card c);
 bool AreEqual(card c1 , card c2);
 
 /**
- * @brief Create a pack object
- * A Pack is an object that contain
- * 
- * @return pack 
+ * @brief Generates a complete deck of cards.
+ * @details This function creates a standard pack aimed to contain 52 playing cards,
+ * including all suits (Hearts, Diamonds, Clubs, Spades) and
+ * values (2 to 10, Jack, Queen, King, Ace).
+ * @return A pack that can store 52 cards in a shuffled oreder.
+ * @note The array provided must be large enough to hold all 52 cards (excluding joker).
  */
 pack CreatePack();
+
+
+/**
+ * @brief check if the pack is empty
+ * 
+ * @param p 
+ * @return true if the pack is empty
+ * false otherwise
+ */
 bool IsEmptyPack(pack p);
+
+
+/**
+ * @brief add a card in the pack
+ * 
+ * @param p A pack where to add the card
+ * @param c the card to be added
+ * @return pack 
+ */
+pack AddCardPack(pack p,card c);
+
+
+/**
+ * @brief Create an empty Pick object
+ * that will be use to store the  card remaining after
+ * the split of cards to players
+ * @return pick 
+ */
 pick CreatePick();
-bool IsEmptyPick(pick)
+
+
+/**
+ * @brief check if the pick is empty
+ * @return true if the pick is empty
+ * false otherwise
+ */
+bool IsEmptyPick(pick);
+
+
+/**
+ * @brief add a card in the pack
+ * 
+ * @param p A pack where to add the card
+ * @param c the card to be added
+ * @return pack 
+ */
+pick AddCardPick(pick p , card c );
 #endif
