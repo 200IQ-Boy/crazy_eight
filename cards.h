@@ -16,7 +16,8 @@ typedef enum {
     ACE = 1,
     JACK = 11,
     QUEEN = 12,
-    KING = 13
+    KING = 13,
+    NB_NAMES = 4
 }SpecialCardType;
 
 typedef struct 
