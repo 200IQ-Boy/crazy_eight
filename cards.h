@@ -11,25 +11,33 @@ typedef enum
     CLUBS,
     NB_COLORS
 } color;
+// special  cards 
+typedef enum {
+    ACE = 1,
+    JACK = 11,
+    QUEEN = 12,
+    KING = 13
+}SpecialCardType;
 
 typedef struct 
 {
     uint value;
     color color;
-}base_card;
+}BaseCard;
 
 typedef struct 
 {
-    char* name;
+    SpecialCardType name;
     color color;
-}spe_card;
+}SpecialCard;
+
 typedef struct 
 {
-    bool is_named;
+    bool is_special;
     union
     {
-    base_card b_card;
-    spe_card s_card;
+    BaseCard b_card;
+    SpecialCard s_card;
     }card_type;
 }s_card;
 typedef s_card* card;
@@ -78,7 +86,7 @@ card CreateClassicCard(color color,uint number);
  * @note This function assumes the special values are between 11 and 14.
  *       Other values are not handled.
  */
-card CreateSpeCard(char* name , color color);
+card CreateSpeCard(SpecialCardType name , color color);
 
 
 /**
