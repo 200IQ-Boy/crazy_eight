@@ -81,6 +81,10 @@ card CreateClassicCard(color color,uint number);
 card CreateSpeCard(char* name , color color);
 
 
+/**
+ * @brief display the given card in shell
+ * @param c 
+ */
 void PrintCard(card c);
 
 
