@@ -83,11 +83,7 @@ void PrintCard(card c) {
         switch (c->card_type.s_card.name)
         {
         case ACE:
-            printf("    _ _ _ _ _ _ _ _ _\n");
-            printf("   | A            A  |\n");
-            printf("   |                 |\n");
-            printf("   |                 |\n");
-            printf("   |        ");
+            printf(".------.\n|A     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
             case SPADES:
@@ -105,18 +101,9 @@ void PrintCard(card c) {
             default:
                 break;
             }
-            printf("        |\n");
-            printf("   |                 |\n");
-            printf("   |                 |\n");
-            printf("   | A            A |\n");
-            printf("    _ _ _ _ _ _ _ _ _\n");
-            break;
+            printf("   |\n|      |\n|     A|\n'------'\n");
         case JACK:
-            printf("    _ _ _ _ _ _ _ _ _\n");
-            printf("   | J            J  |\n");
-            printf("   |                 |\n");
-            printf("   |                 |\n");
-            printf("   |        ");
+            printf(".------.\n|J     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
             case SPADES:
@@ -134,18 +121,9 @@ void PrintCard(card c) {
             default:
                 break;
             }
-            printf("        |\n");
-            printf("   |                 |\n");
-            printf("   |                 |\n");
-            printf("   | J            J |\n");
-            printf("    _ _ _ _ _ _ _ _ _\n");
-            break;
+            printf("   |\n|      |\n|     J|\n'------'\n");
         case QUEEN:
-            printf("    _ _ _ _ _ _ _ _ _\n");
-            printf("   | Q            Q  |\n");
-            printf("   |                 |\n");
-            printf("   |                 |\n");
-            printf("   |        ");
+            printf(".------.\n|Q     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
             case SPADES:
@@ -163,18 +141,9 @@ void PrintCard(card c) {
             default:
                 break;
             }
-            printf("        |\n");
-            printf("   |                 |\n");
-            printf("   |                 |\n");
-            printf("   | Q            Q |\n");
-            printf("    _ _ _ _ _ _ _ _ _\n");
-            break;
+            printf("   |\n|      |\n|     Q|\n'------'\n");
         case KING:
-            printf("    _ _ _ _ _ _ _ _ _\n");
-            printf("   | K            K  |\n");
-            printf("   |                 |\n");
-            printf("   |                 |\n");
-            printf("   |        ");
+            printf(".------.\n|K     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
             case SPADES:
@@ -192,46 +161,32 @@ void PrintCard(card c) {
             default:
                 break;
             }
-            printf("        |\n");
-            printf("   |                 |\n");
-            printf("   |                 |\n");
-            printf("   | K            K |\n");
-            printf("    _ _ _ _ _ _ _ _ _\n");
-            break;
+            printf("   |\n|      |\n|     K|\n'------'\n");
         default:
             break;
         }
     }
     else{
-        printf("    _ _ _ _ _ _ _ _ _\n");
-        printf("   | %d            %d  |\n",c->card_type.b_card.value,c->card_type.b_card.value);
-        printf("   |                 |\n");
-        printf("   |                 |\n");
-        printf("   |        ");
-        switch (c->card_type.b_card.color)
-        {
-        case SPADES:
-            printf("♤");
-            break;
-        case HEARTS:
-            printf("♡");
-            break;
-        case DIAMONDS:
-            printf("♢");
-            break;
-        case CLUBS:
-            printf("♧");
-            break;
-        default:
-            break;
-        }
-        printf("        |\n");
-        printf("   |                 |\n");
-        printf("   |                 |\n");
-        printf("   | %d            %d |\n",c->card_type.b_card.value,c->card_type.b_card.value);
-        printf("    _ _ _ _ _ _ _ _ _\n");
+        printf(".------.\n|%d     |\n|      |\n|  ",c->card_type.b_card.value);
+            switch (c->card_type.s_card.color)
+            {
+            case SPADES:
+                printf("♤");
+                break;
+            case HEARTS:
+                printf("♡");
+                break;
+            case DIAMONDS:
+                printf("♢");
+                break;
+            case CLUBS:
+                printf("♧");
+                break;
+            default:
+                break;
+            }
+            printf("   |\n|      |\n|     %d|\n'------'\n",c->card_type.b_card.value);
     }
-    
 }
 
 int main(){

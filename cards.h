@@ -50,11 +50,12 @@ typedef struct
 }s_pack;
 typedef s_pack* pack;
 
-typedef struct 
+struct s_pick
 {
     card picked;
-    pick next;
-}s_pick;
+    struct s_pick* next;
+};
+typedef struct s_pick s_pick;
 typedef s_pick* pick;
 
 /*  basics functions to handle cards  */
