@@ -1,5 +1,5 @@
-#ifndef CARDS
-#define CARDS
+#ifndef _CARDS
+#define _CARDS
 #include <stdbool.h>
 
 typedef unsigned int uint;
@@ -100,14 +100,15 @@ void PrintCard(card c);
 /**
  * @brief 
  * @details Compare two cards and return true if :
- * - both cards has the same color 
- * - both cards has the same number
+ * - both cards are basic and has the same color
+ * - both cards are basic and has the same number
+ * - both cards are special and has name
  * @param c1 A card
  * @param c2 A card
  * @return true if both cards have the same color or the number
  * false otherwise
  */
-bool AreEqual(card c1 , card c2);
+bool AreEquivalent(card c1 , card c2);
 
 /**
  * @brief Generates a complete deck of cards.
