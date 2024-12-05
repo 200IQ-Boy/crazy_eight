@@ -112,6 +112,13 @@ void PrintCard(card c);
 bool AreEquivalent(card c1 , card c2);
 
 /**
+ * @brief Free the allocated memory for the card
+ * 
+ * @param c the card
+ */
+void FreeCard(card c);
+
+/**
  * @brief Generates a complete deck of cards.
  * @details This function creates a standard pack aimed to contain 52 playing cards,
  * including all suits (Hearts, Diamonds, Clubs, Spades) and
