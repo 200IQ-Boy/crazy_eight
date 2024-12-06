@@ -215,5 +215,23 @@ void FreeCard(card c){
 }
 
 pack CreatePack(){
-    
+    pack n_pack = malloc(sizeof(s_pack));
+    if(n_pack == NULL){
+        fprintf(stderr,"Failed to create a new pack\n");
+        exit(EXIT_FAILURE);
+    }
+    n_pack->pack_cards = malloc(52*sizeof(s_card));
+    if(n_pack->pack_cards == NULL){
+        fprintf(stderr,"Failed to create a new pack\n");
+        free(n_pack);
+        exit(EXIT_FAILURE);
+    }
+    n_pack->taille = 0;
+    return n_pack; 
+}
+
+bool IsEmptyPack(pack p){
+    if(p == NULL || p->taille == 0)
+        return true;
+    return false;
 }
