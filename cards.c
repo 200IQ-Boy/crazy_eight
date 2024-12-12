@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include "cards.h"
 #include <time.h>
+#include <assert.h>
 
 card CreateClassicCard(color color,uint number){
     //check parameters validity
@@ -167,9 +168,14 @@ void PrintCard(card c) {
         }
     }
     else{
-        printf(".------.\n|%d     |\n|      |\n|  ",c->card_type.b_card.value);
-            switch (c->card_type.s_card.color)
-            {
+        if(c->card_type.b_card.value == 10){
+            printf(".------.\n|%d    |\n|      |\n|  ",c->card_type.b_card.value);
+        }
+        else{
+            printf(".------.\n|%d     |\n|      |\n|  ",c->card_type.b_card.value);
+        }
+        switch (c->card_type.s_card.color)
+        {
             case SPADES:
                 printf("♤");
                 break;
@@ -184,28 +190,14 @@ void PrintCard(card c) {
                 break;
             default:
                 break;
-            }
+        }
+        if(c->card_type.b_card.value == 10){
+            printf("   |\n|      |\n|    %d|\n'------'\n",c->card_type.b_card.value);
+        }
+        else{
             printf("   |\n|      |\n|     %d|\n'------'\n",c->card_type.b_card.value);
+        }
     }
-}
-
-bool AreEquivalent(card c1 , card c2){
-    // test parameters validity
-    if(c1 == NULL || c2 != NULL){
-        fprintf(stderr,"One of the cards is NULL\n");
-        exit(EXIT_FAILURE);
-    }
-    // if cards are special we only compare the name
-    if(c1->is_special && c2->is_special){
-        return c1->card_type.s_card.name == c2->card_type.s_card.name;
-    }
-    // if cards are not special we compare the color and the number
-    else if(!c1->is_special && !c2->is_special){
-        if(c1->card_type.b_card.color != c2->card_type.b_card.color)
-            return c1->card_type.b_card.value == c2->card_type.b_card.value;
-        return true;
-    }
-    return false;
 }
 
 void FreeCard(card c){
@@ -237,7 +229,7 @@ bool IsEmptyPack(pack p){
 }
 
 pack AddCardPack(pack p,card c){
-    if(IsEmptyPack(p) || c == NULL){
+    if(p == NULL || c == NULL){
         fprintf(stderr,"The pack or the card is NULL\n");
         exit(EXIT_FAILURE);
     }
@@ -248,6 +240,25 @@ pack AddCardPack(pack p,card c){
     p->pack_cards[p->taille] = c;
     p->taille++;
     return p;
+}
+
+pack CreateFullPack(){
+    pack f_pack = CreatePack();
+    
+    // add of basic cards in the pack
+    for(int color = 0; color < NB_COLORS ; color++){
+        for(int value = 2; value < 11; value++){
+            AddCardPack(f_pack,CreateClassicCard(color,value));
+        }
+    }
+    // add of special cards
+    for(int color = 0; color < NB_COLORS ; color++){
+        AddCardPack(f_pack,CreateSpeCard(ACE,color));
+        AddCardPack(f_pack,CreateSpeCard(JACK,color));
+        AddCardPack(f_pack,CreateSpeCard(QUEEN,color));
+        AddCardPack(f_pack,CreateSpeCard(KING,color));
+    }
+    return f_pack;
 }
 
 pack ShufflePack(pack p){
@@ -339,4 +350,25 @@ void FreePick(pick p){
             tmp = q;
         }
     }
+}
+ 
+int main(){
+    printf("=> Test of the cards module\n");
+    pack p = CreateFullPack();
+    printf("\t=> test CreateFullPack() : \n");
+    for(int i = 0; i < 9; i++){
+        PrintCard(p->pack_cards[i]);
+    }
+    p = ShufflePack(p);
+    printf("\t=> test ShufflePack() : \n");
+    for(int i = 0; i < 9; i++){
+        PrintCard(p->pack_cards[i]);
+    }
+    card c = Distribute(p);
+    printf("\t=> test Distribute() : \n");
+    printf("\t\t=> The card distributed is : \n");  
+    PrintCard(c);
+    FreeCard(c);
+    FreePack(p);
+    return EXIT_SUCCESS;
 }

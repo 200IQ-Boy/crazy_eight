@@ -153,8 +153,7 @@ void FreeCard(card c);
  * @details This function creates a standard pack aimed to contain 52 playing cards,
  * including all suits (Hearts, Diamonds, Clubs, Spades) and
  * values (2 to 10, Jack, Queen, King, Ace).
- * @return A pack that can store 52 cards in a shuffled oreder.
- * @note The array provided must be large enough to hold all 52 cards (excluding joker).
+ * @return A pack that can store 52 cards.
  */
 pack CreatePack();
 
@@ -171,12 +170,19 @@ bool IsEmptyPack(pack p);
 
 /**
  * @brief add a card in the pack
- * 
  * @param p A pack where to add the card
  * @param c the card to be added
- * @return pack 
+ * @return a pack with the added card
  */
 pack AddCardPack(pack p,card c);
+
+
+/**
+ * @brief Create a pack object
+ * with the 52 cards composing a crazy eight game (without Jokers)
+ * @return pack
+ */
+pack CreateFullPack();
 
 
 /**
