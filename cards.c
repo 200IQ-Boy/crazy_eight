@@ -352,23 +352,3 @@ void FreePick(pick p){
     }
 }
  
-int main(){
-    printf("=> Test of the cards module\n");
-    pack p = CreateFullPack();
-    printf("\t=> test CreateFullPack() : \n");
-    for(int i = 0; i < 9; i++){
-        PrintCard(p->pack_cards[i]);
-    }
-    p = ShufflePack(p);
-    printf("\t=> test ShufflePack() : \n");
-    for(int i = 0; i < 9; i++){
-        PrintCard(p->pack_cards[i]);
-    }
-    card c = Distribute(p);
-    printf("\t=> test Distribute() : \n");
-    printf("\t\t=> The card distributed is : \n");  
-    PrintCard(c);
-    FreeCard(c);
-    FreePack(p);
-    return EXIT_SUCCESS;
-}
