@@ -180,9 +180,9 @@ pack AddCardPack(pack p,card c);
 
 
 /**
- * @brief Shuffle a pack supposed full
+ * @brief Shuffle a pack
  * @param p 
- * @return pack 
+ * @return a pack shuffled
  */
 pack ShufflePack(pack p);
 
@@ -196,7 +196,7 @@ void FreePack(pack p);
 /**
  * @brief Distribute a card to a player
  * The pack is supposed shuffled and full. 
- * It'll be automatically uploaded after card distribution
+ * The pack will be automatically uploaded after card distribution
  * @param p 
  * @return card 
  */
@@ -217,7 +217,7 @@ pick CreatePick();
  * @return true if the pick is empty
  * false otherwise
  */
-bool IsEmptyPick(pick);
+bool IsEmptyPick(pick p);
 
 
 /**
@@ -225,7 +225,7 @@ bool IsEmptyPick(pick);
  * 
  * @param p A pack where to add the card
  * @param c the card to be added
- * @return pack 
+ * @return a pick with the new added card
  */
 pick AddCardPick(pick p , card c );
 

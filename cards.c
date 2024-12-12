@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "cards.h"
-#include <assert.h>
+#include <time.h>
 
 card CreateClassicCard(color color,uint number){
     //check parameters validity
@@ -237,7 +237,7 @@ bool IsEmptyPack(pack p){
 }
 
 pack AddCardPack(pack p,card c){
-    if(p == NULL || c == NULL){
+    if(IsEmptyPack(p) || c == NULL){
         fprintf(stderr,"The pack or the card is NULL\n");
         exit(EXIT_FAILURE);
     }
@@ -250,6 +250,42 @@ pack AddCardPack(pack p,card c){
     return p;
 }
 
+pack ShufflePack(pack p){
+    // test parameters validity
+    if(IsEmptyPack(p)){
+        fprintf(stderr,"Empty pack can't be shuffled\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Fisher-Yates Shuffle Algorithm
+    srand(time(NULL));
+    for (int i = p->taille - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        card tmp = p->pack_cards[i];
+        p->pack_cards[i] = p->pack_cards[j];
+        p->pack_cards[j] = tmp;
+    }
+    return p;
+}
+
+void FreePack(pack p){
+    if(p != NULL){
+        free(p->pack_cards);
+        free(p);
+    }
+}
+
+card Distribute(pack p){
+    if(IsEmptyPack(p)){
+        fprintf(stderr,"Distribution failed: the pack is empty\n");
+        exit(EXIT_FAILURE);
+    }
+    card res = p->pack_cards[p->taille - 1];
+    p->pack_cards[p->taille - 1] = NULL;
+    p->taille --;
+    return res;
+}
+
 pick CreatePick() {
     pick pioche = malloc(sizeof(s_pick));
     if(pioche == NULL){
@@ -259,4 +295,48 @@ pick CreatePick() {
     pioche->next = NULL;
     pioche->picked = NULL;  
     return pioche;
+}
+
+bool IsEmptyPick(pick p){
+    return p == NULL || p->picked == NULL ;
+}
+
+pick AddCardPick(pick p , card c ){
+    if(p == NULL || c == NULL){
+        fprintf(stderr,"The pick or the card is NULL\n");
+        exit(EXIT_FAILURE);
+    }
+    if(p->picked == NULL){
+        p->picked = c;
+        return p;
+    }
+    pick node = CreatePick();
+    node->picked = c;
+    node->next = NULL;
+    p->next = node;
+    return p;
+}
+
+card PickCard(pick p){
+    if(IsEmptyPick(p)){
+        fprintf(stderr,"The pick is empty\n");
+        exit(EXIT_FAILURE);
+    }
+    card res = p->picked;
+    pick tmp = p->next;
+    free(p);
+    p = tmp;
+    return res;
+}
+
+void FreePick(pick p){
+    if(!IsEmptyPick(p)){
+        free(p);
+        pick tmp = p->next;
+        while(tmp != NULL){
+            pick q = tmp->next;
+            free(tmp);
+            tmp = q;
+        }
+    }
 }
