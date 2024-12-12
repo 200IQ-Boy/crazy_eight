@@ -3,6 +3,11 @@
 #include <stdbool.h>
 
 typedef unsigned int uint;
+
+/**
+ * @enum color
+ * @brief Enumeration for the colors of the cards.
+ */
 typedef enum 
 {
     SPADES, 
@@ -11,7 +16,12 @@ typedef enum
     CLUBS,
     NB_COLORS
 } color;
-// special  cards 
+
+
+/**
+ * @enum SpecialCardType
+ * @brief Enumeration for the types of special cards.
+ */
 typedef enum {
     ACE = 1,
     JACK = 11,
@@ -20,18 +30,30 @@ typedef enum {
     NB_NAMES = 4
 }SpecialCardType;
 
+/**
+ * @struct BaseCard
+ * @brief Represents a standard card (non-special).
+ */
 typedef struct 
 {
     uint value;
     color color;
 }BaseCard;
 
+/**
+ * @struct SpecialCard
+ * @brief Represents a special card (Ace, Jack, Queen, King).
+ */
 typedef struct 
 {
     SpecialCardType name;
     color color;
 }SpecialCard;
 
+/**
+ * @struct s_card
+ * @brief Represents a card, which can either be a base card or a special card.
+ */
 typedef struct 
 {
     bool is_special;
@@ -43,13 +65,21 @@ typedef struct
 }s_card;
 typedef s_card* card;
 
+/**
+ * @struct s_pack
+ * @brief Represents a pack of cards.
+ */
 typedef struct 
 {
     uint taille;
-    card pack_cards;
+    card* pack_cards;
 }s_pack;
 typedef s_pack* pack;
 
+/**
+ * @struct s_pick
+ * @brief Represents a node in a linked list of picked cards.
+ */
 struct s_pick
 {
     card picked;
@@ -150,6 +180,30 @@ pack AddCardPack(pack p,card c);
 
 
 /**
+ * @brief Shuffle a pack supposed full
+ * @param p 
+ * @return pack 
+ */
+pack ShufflePack(pack p);
+
+/**
+ * @brief Free the memory allocated for a Pack
+ * @param p a pack  
+ */
+void FreePack(pack p);
+
+
+/**
+ * @brief Distribute a card to a player
+ * The pack is supposed shuffled and full. 
+ * It'll be automatically uploaded after card distribution
+ * @param p 
+ * @return card 
+ */
+card Distribute(pack p);
+
+
+/**
  * @brief Create an empty Pick object
  * that will be use to store the  card remaining after
  * the split of cards to players
@@ -174,4 +228,20 @@ bool IsEmptyPick(pick);
  * @return pack 
  */
 pick AddCardPick(pick p , card c );
+
+
+/**
+ * @brief Pick a card in a pick 
+ * The pick given is automatically uploaded 
+ * @param p a pick
+ * @return the card on top of the pick 
+ */
+card PickCard(pick p);
+
+
+/**
+ * @brief Free the memory allocated for the pick 
+ * @param p a pick
+ */
+void FreePick(pick p);
 #endif

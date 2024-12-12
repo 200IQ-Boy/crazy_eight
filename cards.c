@@ -220,7 +220,7 @@ pack CreatePack(){
         fprintf(stderr,"Failed to create a new pack\n");
         exit(EXIT_FAILURE);
     }
-    n_pack->pack_cards = malloc(52*sizeof(s_card));
+    n_pack->pack_cards = malloc(52*sizeof(card));
     if(n_pack->pack_cards == NULL){
         fprintf(stderr,"Failed to create a new pack\n");
         free(n_pack);
@@ -234,4 +234,29 @@ bool IsEmptyPack(pack p){
     if(p == NULL || p->taille == 0)
         return true;
     return false;
+}
+
+pack AddCardPack(pack p,card c){
+    if(p == NULL || c == NULL){
+        fprintf(stderr,"The pack or the card is NULL\n");
+        exit(EXIT_FAILURE);
+    }
+    if(p->taille == 52){
+        fprintf(stderr,"The pack is full\n");
+        exit(EXIT_FAILURE);
+    }
+    p->pack_cards[p->taille] = c;
+    p->taille++;
+    return p;
+}
+
+pick CreatePick() {
+    pick pioche = malloc(sizeof(s_pick));
+    if(pioche == NULL){
+        fprintf(stderr,"Failed to create a new Pick\n");
+        exit(EXIT_FAILURE);
+    }
+    pioche->next = NULL;
+    pioche->picked = NULL;  
+    return pioche;
 }
