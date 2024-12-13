@@ -5,13 +5,15 @@
 #include <time.h>
 #include <assert.h>
 
-card CreateClassicCard(color color,uint number){
+card CreateClassicCard(color color,uint number)
+{
     //check parameters validity
     assert(color < NB_COLORS && color >= SPADES) ;
     assert(number >= 2 && number <= 10);
 
     card c = malloc(sizeof(s_card));
-    if(c == NULL){
+    if(c == NULL)
+    {
         fprintf(stderr,"Failed to create a new card\n");
         exit(EXIT_FAILURE);
     }
@@ -21,12 +23,14 @@ card CreateClassicCard(color color,uint number){
     return c;
 }
 
-card CreateSpeCard(SpecialCardType name , color color){
+card CreateSpeCard(SpecialCardType name , color color)
+{
     //check parameters validity
     assert(color < NB_COLORS && color >= SPADES);
 
     card c = malloc(sizeof(s_card));
-    if(c == NULL){
+    if(c == NULL)
+    {
         fprintf(stderr,"Failed to create a new special card\n");
         exit(EXIT_FAILURE);
     }
@@ -58,29 +62,36 @@ card CreateSpeCard(SpecialCardType name , color color){
     return c;
 }
 
-bool AreEquivalent(card c1 , card c2){
+bool AreEquivalent(card c1 , card c2)
+{
     // test parameters validity
-    if(c1 == NULL || c2 != NULL){
+    if(c1 == NULL || c2 != NULL)
+    {
         fprintf(stderr,"One of the cards is NULL\n");
         exit(EXIT_FAILURE);
     }
     // if cards are special we only compare the name
-    if(c1->is_special && c2->is_special){
+    if(c1->is_special && c2->is_special)
+    {
         return c1->card_type.s_card.name == c2->card_type.s_card.name;
     }
     // if cards are not special we compare the color and the number
-    else if(!c1->is_special && !c2->is_special){
+    else if(!c1->is_special && !c2->is_special)
+    {
         return c1->card_type.b_card.color == c2->card_type.b_card.color || c1->card_type.b_card.value == c2->card_type.b_card.value;
     }
     return false;
 }
 
-void PrintCard(card c) {
-    if(c == NULL){
+void PrintCard(card c) 
+{
+    if(c == NULL)
+    {
         fprintf(stderr,"The card is NULL\n");
         exit(EXIT_FAILURE);
     }
-    if(c->is_special){
+    if(c->is_special)
+    {
         switch (c->card_type.s_card.name)
         {
         case ACE:
@@ -167,11 +178,14 @@ void PrintCard(card c) {
             break;
         }
     }
-    else{
-        if(c->card_type.b_card.value == 10){
+    else
+    {
+        if(c->card_type.b_card.value == 10)
+        {
             printf(".------.\n|%d    |\n|      |\n|  ",c->card_type.b_card.value);
         }
-        else{
+        else
+        {
             printf(".------.\n|%d     |\n|      |\n|  ",c->card_type.b_card.value);
         }
         switch (c->card_type.s_card.color)
@@ -191,29 +205,36 @@ void PrintCard(card c) {
             default:
                 break;
         }
-        if(c->card_type.b_card.value == 10){
+        if(c->card_type.b_card.value == 10)
+        {
             printf("   |\n|      |\n|    %d|\n'------'\n",c->card_type.b_card.value);
         }
-        else{
+        else
+        {
             printf("   |\n|      |\n|     %d|\n'------'\n",c->card_type.b_card.value);
         }
     }
 }
 
-void FreeCard(card c){
-    if(c != NULL){
+void FreeCard(card c)
+{
+    if(c != NULL)
+    {
         free(c);
     }
 }
 
-pack CreatePack(){
+pack CreatePack()
+{
     pack n_pack = malloc(sizeof(s_pack));
-    if(n_pack == NULL){
+    if(n_pack == NULL)
+    {
         fprintf(stderr,"Failed to create a new pack\n");
         exit(EXIT_FAILURE);
     }
     n_pack->pack_cards = malloc(52*sizeof(card));
-    if(n_pack->pack_cards == NULL){
+    if(n_pack->pack_cards == NULL)
+    {
         fprintf(stderr,"Failed to create a new pack\n");
         free(n_pack);
         exit(EXIT_FAILURE);
@@ -222,18 +243,22 @@ pack CreatePack(){
     return n_pack; 
 }
 
-bool IsEmptyPack(pack p){
+bool IsEmptyPack(pack p)
+{
     if(p == NULL || p->taille == 0)
         return true;
     return false;
 }
 
-pack AddCardPack(pack p,card c){
-    if(p == NULL || c == NULL){
+pack AddCardPack(pack p,card c)
+{
+    if(p == NULL || c == NULL)
+    {
         fprintf(stderr,"The pack or the card is NULL\n");
         exit(EXIT_FAILURE);
     }
-    if(p->taille == 52){
+    if(p->taille == 52)
+    {
         fprintf(stderr,"The pack is full\n");
         exit(EXIT_FAILURE);
     }
@@ -242,17 +267,21 @@ pack AddCardPack(pack p,card c){
     return p;
 }
 
-pack CreateFullPack(){
+pack CreateFullPack()
+{
     pack f_pack = CreatePack();
     
     // add of basic cards in the pack
-    for(int color = 0; color < NB_COLORS ; color++){
-        for(int value = 2; value < 11; value++){
+    for(int color = 0; color < NB_COLORS ; color++)
+    {
+        for(int value = 2; value < 11; value++)
+        {
             AddCardPack(f_pack,CreateClassicCard(color,value));
         }
     }
     // add of special cards
-    for(int color = 0; color < NB_COLORS ; color++){
+    for(int color = 0; color < NB_COLORS ; color++)
+    {
         AddCardPack(f_pack,CreateSpeCard(ACE,color));
         AddCardPack(f_pack,CreateSpeCard(JACK,color));
         AddCardPack(f_pack,CreateSpeCard(QUEEN,color));
@@ -261,16 +290,19 @@ pack CreateFullPack(){
     return f_pack;
 }
 
-pack ShufflePack(pack p){
+pack ShufflePack(pack p)
+{
     // test parameters validity
-    if(IsEmptyPack(p)){
+    if(IsEmptyPack(p))
+    {
         fprintf(stderr,"Empty pack can't be shuffled\n");
         exit(EXIT_FAILURE);
     }
 
     // Fisher-Yates Shuffle Algorithm
     srand(time(NULL));
-    for (int i = p->taille - 1; i > 0; i--) {
+    for (int i = p->taille - 1; i > 0; i--) 
+    {
         int j = rand() % (i + 1);
         card tmp = p->pack_cards[i];
         p->pack_cards[i] = p->pack_cards[j];
@@ -279,15 +311,19 @@ pack ShufflePack(pack p){
     return p;
 }
 
-void FreePack(pack p){
-    if(p != NULL){
+void FreePack(pack p)
+{
+    if(p != NULL)
+    {
         free(p->pack_cards);
         free(p);
     }
 }
 
-card Distribute(pack p){
-    if(IsEmptyPack(p)){
+card Distribute(pack p)
+{
+    if(IsEmptyPack(p))
+    {
         fprintf(stderr,"Distribution failed: the pack is empty\n");
         exit(EXIT_FAILURE);
     }
@@ -297,9 +333,11 @@ card Distribute(pack p){
     return res;
 }
 
-pick CreatePick() {
+pick CreatePick() 
+{
     pick pioche = malloc(sizeof(s_pick));
-    if(pioche == NULL){
+    if(pioche == NULL)
+    {
         fprintf(stderr,"Failed to create a new Pick\n");
         exit(EXIT_FAILURE);
     }
@@ -308,16 +346,20 @@ pick CreatePick() {
     return pioche;
 }
 
-bool IsEmptyPick(pick p){
+bool IsEmptyPick(pick p)
+{
     return p == NULL || p->picked == NULL ;
 }
 
-pick AddCardPick(pick p , card c ){
-    if(p == NULL || c == NULL){
+pick AddCardPick(pick p , card c )
+{
+    if(p == NULL || c == NULL)
+    {
         fprintf(stderr,"The pick or the card is NULL\n");
         exit(EXIT_FAILURE);
     }
-    if(p->picked == NULL){
+    if(p->picked == NULL)
+    {
         p->picked = c;
         return p;
     }
@@ -328,8 +370,10 @@ pick AddCardPick(pick p , card c ){
     return p;
 }
 
-card PickCard(pick p){
-    if(IsEmptyPick(p)){
+card PickCard(pick p)
+{
+    if(IsEmptyPick(p))
+    {
         fprintf(stderr,"The pick is empty\n");
         exit(EXIT_FAILURE);
     }
@@ -340,11 +384,14 @@ card PickCard(pick p){
     return res;
 }
 
-void FreePick(pick p){
-    if(!IsEmptyPick(p)){
+void FreePick(pick p)
+{
+    if(!IsEmptyPick(p))
+    {
         free(p);
         pick tmp = p->next;
-        while(tmp != NULL){
+        while(tmp != NULL)
+        {
             pick q = tmp->next;
             free(tmp);
             tmp = q;
