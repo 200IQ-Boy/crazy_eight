@@ -217,7 +217,7 @@ bool IsEmptyPick(pick p);
 
 
 /**
- * @brief add a card in the pack
+ * @brief add a card in the pick
  * 
  * @param p A pack where to add the card
  * @param c the card to be added

@@ -17,6 +17,7 @@ typedef struct
     bool ClockWise;
     card current_card;
     uint nb_players;
+    uint id_current_player;
     player* players;
     pack pack;
     pick pick;
@@ -25,10 +26,11 @@ typedef game_s* game;
 
 
 /* functions to manipulate game instances  */
+
 /**
- * @brief Create a player 
+ * @brief Create a player. 
  * The player object can represent both bot and actual players
- * @return a player 
+ * @return a player with an empty hand. A player can get at most 5 cards
  */
 player CreatePlayer();
 
@@ -67,8 +69,8 @@ bool HasBasicCard(player p, color color, uint value);
  * This function creates and initializes a game structure with the following:
  * - A shuffled deck of cards.
  * - A specified number of players with empty hands.
- * - A random card in the packk is set as the starting card.
- * - The game direction set to clockwise by default.
+ * - A random card in the pack is set as the starting card.
+ * - The game direction set to clockwise by default following the order of addition in the game.
  * 
  * @return A pointer to the newly created game instance.
  *         Returns NULL if the allocation of memory fails or the input is invalid.
