@@ -133,10 +133,10 @@ void PrintCard(card c);
  * @details Compare two cards and return true if :
  * - both cards are basic and has the same color
  * - both cards are basic and has the same number
- * - both cards are special and has name
+ * - both cards are special and has the same name
  * @param c1 A card
  * @param c2 A card
- * @return true if both cards have the same color or the number
+ * @return true if both cards are equivalent
  * false otherwise
  */
 bool AreEquivalent(card c1 , card c2);
@@ -197,16 +197,6 @@ pack ShufflePack(pack p);
  * @param p a pack  
  */
 void FreePack(pack p);
-
-
-/**
- * @brief Distribute a card to a player
- * The pack is supposed shuffled and full. 
- * The pack will be automatically uploaded after card distribution
- * @param p 
- * @return card 
- */
-card Distribute(pack p);
 
 
 /**
