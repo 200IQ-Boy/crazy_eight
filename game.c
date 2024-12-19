@@ -89,6 +89,7 @@ game CreateGame(uint nb_players)
     g->nb_players = nb_players;
     g->pack = pack;
     g->pick = pick;
+    g->id_current_player = 0;
     g->players = malloc(nb_players*sizeof(player));
     if(g->players == NULL)
     {
@@ -121,4 +122,35 @@ player GetCurrentPlayer(const game g)
 {
     assert(g != NULL);
     return g->players[0];
+}
+
+game AddPlayer(game g,player p) 
+{
+    if(g == NULL || p == NULL)
+    {
+        fprintf(stderr,"Null,player or game given to the function\n");
+        exit(EXIT_FAILURE);
+    }
+    if(g->nb_players < MAX_PLAYERS)
+    {
+        g->players[g->nb_players] = p;
+        g->nb_players++;
+    }
+}
+
+void Distribute(game g,uint nb_cards) 
+{
+    //test parameters validity
+    assert(g != NULL);
+    assert(nb_cards < HAND_MAX_CARDS);
+    assert(g->nb_players <= MAX_PLAYERS && g->nb_players > 1);
+    int k = 0;
+    for(int i = 0; i < g->nb_players; i++)
+    {
+        g->players[i]->nb_cards = nb_cards;
+        for(int j = 0; j < nb_cards; j++)
+        {
+            g->players[i]->hand[j] = 
+        }
+    }
 }

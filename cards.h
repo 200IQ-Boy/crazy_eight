@@ -177,6 +177,18 @@ bool IsEmptyPack(pack p);
 pack AddCardPack(pack p,card c);
 
 
+
+/**
+ * @brief remove  a card from the pack
+ * 
+ * @param p 
+ * @param c 
+ * @return pack 
+ */
+pack removeCardPack(pack p, card c);
+
+
+
 /**
  * @brief Create a pack object
  * with the 52 cards composing a crazy eight game (without Jokers)

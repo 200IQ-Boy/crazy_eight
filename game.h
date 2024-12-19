@@ -3,7 +3,7 @@
 #include "cards.h"
 
 #define MAX_PLAYERS 5
-#define HAND_MAX_CARDS 5
+#define HAND_MAX_CARDS 42
 
 typedef struct 
 {
@@ -136,18 +136,42 @@ player GetCurrentPlayer(const game g);
  * @param g the current game
  * @return a game with a new player
  */
-game AddPlayer(game g);
+game AddPlayer(game g,player p);
 
 
 /**
  * @brief Distribute an equal amount of cards to all players
- * The game pack is supposed shuffled. 
- * The lasting cards after distribution will be put in the pick
+ * The game pack is supposed shuffled.
+ * The function assume there are at least 2 players in tthe game 
  * @param g the pack
  * @param nb_cards the number of cards every player will get 
- * @note nb_cards <= HAND_MAX_CARDS
+ * @note nb_cards <= HAND_MAX_CARDS 
+ * The lasting cards after distribution will be put in the pick
  */
 void Distribute(game g,uint nb_cards);
+
+
+
+/**
+ * @brief Transfers all cards from a pack to a pick (pile).
+ * 
+ * This function moves all the cards in the given pack into a pick, maintaining the 
+ * original order of the cards from the pack. After the transfer:
+ * - The pack will be empty.
+ * - The pick will contain all the cards previously in the pack.
+ * 
+ * @param p The pick where the cards will be transferred. Must not be NULL.
+ * @param pack The pack containing the cards to transfer. Must not be NULL.
+ * 
+ * @return The updated pick containing the transferred cards.
+ * 
+ * @note 
+ * - The `pack` structure will have its card count (`taille`) reset to 0.
+ * - Memory for the cards is not freed; ownership is transferred to the `pick`.
+ * - If the pick already contains cards, the new cards are appended to the end.
+ */
+pick transferPackToPick(pick p, pack pack);
+
 
 
 /**
