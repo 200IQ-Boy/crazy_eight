@@ -320,17 +320,46 @@ void FreePack(pack p)
     }
 }
 
-card Distribute(pack p)
+pack removeCardPack(pack p, card c)
 {
-    if(IsEmptyPack(p))
+    if(IsEmptyPack(p) || c == NULL)
     {
-        fprintf(stderr,"Distribution failed: the pack is empty\n");
-        exit(EXIT_FAILURE);
+        fprintf(stderr,"The pack is empty or the card is NULL\n");
+        return p;
     }
-    card res = p->pack_cards[p->taille - 1];
-    p->pack_cards[p->taille - 1] = NULL;
-    p->taille --;
-    return res;
+
+    if(c->is_special)
+    {
+        for(int i = 0; i < p->taille; i++)
+        {
+            if(p->pack_cards[i]->is_special && p->pack_cards[i]->card_type.s_card.color == c->card_type.s_card.color && p->pack_cards[i]->card_type.s_card.name == c->card_type.s_card.name)
+            {
+                for(int j = i; j < p->taille - 1; j++)
+                {
+                    p->pack_cards[j] = p->pack_cards[j+1];
+                }
+                p->taille--;
+                return p;
+            }
+        }
+    }
+    else 
+    {
+        for(int i = 0; i < p->taille; i++)
+        {
+            if(!p->pack_cards[i]->is_special && p->pack_cards[i]->card_type.b_card.color == c->card_type.b_card.color && p->pack_cards[i]->card_type.b_card.value == c->card_type.b_card.value)
+            {
+                for(int j = i; j < p->taille - 1; j++)
+                {
+                    p->pack_cards[j] = p->pack_cards[j+1];
+                }
+                p->taille--;
+                return p;
+            }
+        }
+    }
+    fprintf(stderr,"The card is not in the pack\n");
+    return p;
 }
 
 pick CreatePick() 

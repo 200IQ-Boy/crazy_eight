@@ -45,10 +45,10 @@ player CreatePlayer();
  *             - 12: Queen
  *             - 13: King
  *             - 14: Ace
- * @return true if he has it
- * false otherwise 
+ * @return - 1 if the player doesn't have the card
+ * the index of the card in the player otherwise 
  */
-bool HasSpecialCard(player p, color color, SpecialCardType name);
+int HasSpecialCard(player p, color color, SpecialCardType name);
 
 
 /**
@@ -60,7 +60,7 @@ bool HasSpecialCard(player p, color color, SpecialCardType name);
  * @return true if he has it
  * false otherwise 
  */
-bool HasBasicCard(player p, color color, uint value);
+int HasBasicCard(player p, color color, uint value);
 
 
 /**
@@ -68,8 +68,7 @@ bool HasBasicCard(player p, color color, uint value);
  * 
  * This function creates and initializes a game structure with the following:
  * - A shuffled deck of cards.
- * - A specified number of players with empty hands.
- * - A random card in the pack is set as the starting card.
+ * - A specified number of players that the game can handle.
  * - The game direction set to clockwise by default following the order of addition in the game.
  * 
  * @return A pointer to the newly created game instance.
@@ -140,9 +139,10 @@ game AddPlayer(game g,player p);
 
 
 /**
- * @brief Distribute an equal amount of cards to all players
- * The game pack is supposed shuffled.
- * The function assume there are at least 2 players in tthe game 
+ * @brief Distribute an equal amount of cards to all players.
+ * The game pack is supposed shuffled and full.
+ * The function assume there are at least 2 players in the game.
+ * A random card in the pack is set as the starting card.
  * @param g the pack
  * @param nb_cards the number of cards every player will get 
  * @note nb_cards <= HAND_MAX_CARDS 
