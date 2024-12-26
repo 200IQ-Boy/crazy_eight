@@ -259,4 +259,11 @@ void AdvanceToNextPlayer(game g);
  * - The direction of play is significant for determining the next player in the game.
 */
 void ChangeGameDirection(game g);
+
+
+/**
+ * @brief Free the game structure
+ * @param g 
+ */
+void FreeGame(game g);
 #endif

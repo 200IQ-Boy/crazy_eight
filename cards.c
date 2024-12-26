@@ -92,9 +92,8 @@ void PrintCard(card c)
     }
     if(c->is_special)
     {
-        switch (c->card_type.s_card.name)
+        if (c->card_type.s_card.name == ACE)
         {
-        case ACE:
             printf(".------.\n|A     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
@@ -114,7 +113,9 @@ void PrintCard(card c)
                 break;
             }
             printf("   |\n|      |\n|     A|\n'------'\n");
-        case JACK:
+        }
+        else if (c->card_type.s_card.name == JACK)
+        {
             printf(".------.\n|J     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
@@ -134,7 +135,9 @@ void PrintCard(card c)
                 break;
             }
             printf("   |\n|      |\n|     J|\n'------'\n");
-        case QUEEN:
+        }
+        else if (c->card_type.s_card.name == QUEEN)
+        {
             printf(".------.\n|Q     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
@@ -154,7 +157,9 @@ void PrintCard(card c)
                 break;
             }
             printf("   |\n|      |\n|     Q|\n'------'\n");
-        case KING:
+        }
+        else
+        {
             printf(".------.\n|K     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
@@ -174,8 +179,7 @@ void PrintCard(card c)
                 break;
             }
             printf("   |\n|      |\n|     K|\n'------'\n");
-        default:
-            break;
+        
         }
     }
     else
@@ -250,22 +254,20 @@ bool IsEmptyPack(pack p)
     return false;
 }
 
-pack AddCardPack(pack p,card c)
-{
-    if(p == NULL || c == NULL)
-    {
-        fprintf(stderr,"The pack or the card is NULL\n");
+pack AddCardPack(pack p, card c) {
+    if (p == NULL || c == NULL) {
+        fprintf(stderr, "The pack or the card is NULL\n");
         exit(EXIT_FAILURE);
     }
-    if(p->taille == 52)
-    {
-        fprintf(stderr,"The pack is full\n");
+    if (p->taille == 52) {
+        fprintf(stderr, "The pack is full\n");
         exit(EXIT_FAILURE);
     }
     p->pack_cards[p->taille] = c;
     p->taille++;
     return p;
 }
+
 
 pack CreateFullPack()
 {

@@ -86,7 +86,7 @@ game CreateGame(uint nb_players)
     }
 
     g->ClockWise = true;
-    g->nb_players = nb_players;
+    g->nb_players = 0;
     g->pack = pack;
     g->pick = pick;
     g->id_current_player = 0;
@@ -144,11 +144,12 @@ pick transferPackToPick(pick p, pack pack)
     // test parameters validity
     assert(p != NULL);
     assert(pack != NULL);
+    uint taille = pack->taille;
 
-    for(int i = 0; i < pack->taille; i++)
+    for(int i = 0; i < taille; i++)
     {
         p = AddCardPick(p,pack->pack_cards[i]);
-        pack = removeCardPack(pack,pack->pack_cards[i]);
+        pack = removeCardPack(pack,pack->pack_cards[0]);
 
     }
     return p;
@@ -171,10 +172,9 @@ void Distribute(game g,uint nb_cards)
             g->players[i]->hand[j] = g->pack->pack_cards[k];
             k++;
             // update the state of the pack after the card been distribute
-            g->pack = removeCardPack(g->pack,g->players[i]->hand[j]);
+            g->pack = removeCardPack(g->pack,g->pack->pack_cards[k]);
         }
     }
-
     // set the current card
     g->current_card = g->pack->pack_cards[k];
     g->pack = removeCardPack(g->pack,g->pack->pack_cards[k]);
@@ -223,7 +223,7 @@ game PlayBasicCard(player p, game g, color c, uint value)
     assert(p != NULL);
     assert(g != NULL);
     assert(g->current_card != NULL);
-    
+
     int id = HasBasicCard(p,c,value);
     if(id != -1)
     {
@@ -252,4 +252,28 @@ game PlaySpecialCard(player p, game g, color c, SpecialCardType name)
         }
         p->nb_cards--;
     }
+}
+
+void PrintPlayerCards(player p)
+{
+    assert(p != NULL);
+    printf("player nb_cards = %d\n" , p->nb_cards);
+    for(int i = 0; i < p->nb_cards; i++)
+    {
+        PrintCard(p->hand[i]);
+    }
+}
+
+void FreeGame(game g)
+{
+    assert(g != NULL);
+    for(int i = 0; i < g->nb_players; i++)
+    {
+        free(g->players[i]->hand);
+        free(g->players[i]);
+    }
+    FreePack(g->pack);
+    FreePick(g->pick);
+    free(g->players);
+    free(g);
 }
