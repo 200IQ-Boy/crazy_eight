@@ -134,6 +134,8 @@ void PrintCard(card c);
  * - both cards are basic and has the same color
  * - both cards are basic and has the same number
  * - both cards are special and has the same name
+ * - both cards are special and has the same color
+ * - cards have different types but have the same color
  * @param c1 A card
  * @param c2 A card
  * @return true if both cards are equivalent
@@ -185,7 +187,7 @@ pack AddCardPack(pack p,card c);
  * @param c 
  * @return pack 
  */
-pack removeCardPack(pack p, card c);
+pack RemoveCardPack(pack p, card c);
 
 
 

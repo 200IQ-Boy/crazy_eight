@@ -25,9 +25,12 @@
    git clone https://github.com/your-repo/eight-american.git
    cd eight-american
    ```
-2. Compile the code using the provided Makefile:
+2. Compile the code using the provided CMakefile:
    ```bash
-   make
+   mkdir build 
+   cd build
+   cmake ..
+   make 
    ```
    This generates an executable named `eight_american`.
 

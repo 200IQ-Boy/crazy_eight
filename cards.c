@@ -65,22 +65,30 @@ card CreateSpeCard(SpecialCardType name , color color)
 bool AreEquivalent(card c1 , card c2)
 {
     // test parameters validity
-    if(c1 == NULL || c2 != NULL)
+    if(c1 == NULL || c2 == NULL)
     {
         fprintf(stderr,"One of the cards is NULL\n");
         exit(EXIT_FAILURE);
     }
-    // if cards are special we only compare the name
+    // if cards are special we compare the name or the color
     if(c1->is_special && c2->is_special)
     {
-        return c1->card_type.s_card.name == c2->card_type.s_card.name;
+        return c1->card_type.s_card.name == c2->card_type.s_card.name || c1->card_type.s_card.color == c2->card_type.s_card.color;
     }
-    // if cards are not special we compare the color and the number
+    // if cards are not special we compare the color or the number
     else if(!c1->is_special && !c2->is_special)
     {
         return c1->card_type.b_card.color == c2->card_type.b_card.color || c1->card_type.b_card.value == c2->card_type.b_card.value;
     }
-    return false;
+    //check cards of different types are equivalent
+    else if(c1->is_special && !c2->is_special)
+    {
+        return c1->card_type.s_card.color == c2->card_type.b_card.color;
+    }
+    else if(!c1->is_special && c2->is_special)
+    {
+        return c1->card_type.b_card.color == c2->card_type.s_card.color;
+    }
 }
 
 void PrintCard(card c) 
@@ -322,7 +330,7 @@ void FreePack(pack p)
     }
 }
 
-pack removeCardPack(pack p, card c)
+pack RemoveCardPack(pack p, card c)
 {
     if(IsEmptyPack(p) || c == NULL)
     {

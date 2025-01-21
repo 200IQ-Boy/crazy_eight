@@ -139,6 +139,25 @@ game AddPlayer(game g,player p);
 
 
 /**
+ * @brief Remove a player from a game instance
+ * 
+ * @param g the current game
+ * @return a game without the player
+ */
+game RemovePlayer(game g,player p);
+
+
+/**
+ * @brief Check if the current player has won the game
+ * @param g the current game
+ * @param p the player to check
+ * @return true if the player has won the game
+ * false otherwise
+ */
+game PlayerWon(game g);
+
+
+/**
  * @brief Distribute an equal amount of cards to all players.
  * The game pack is supposed shuffled and full.
  * The function assume there are at least 2 players in the game.
@@ -266,4 +285,12 @@ void ChangeGameDirection(game g);
  * @param g 
  */
 void FreeGame(game g);
+
+
+/**
+ * @brief Play the game with a bot
+ * @param g the current game
+ * @return the game after the bot played
+ */
+game BotPlay(game g);
 #endif
