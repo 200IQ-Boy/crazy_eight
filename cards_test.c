@@ -2,43 +2,182 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 #include "cards.h"
 
-void usage(char *argv[]) {
+static void FreeCards(card *cards, uint length)
+{
+    if (cards != NULL && length != 0)
+    {
+        for (int i = 0; i < length; i++)
+        {
+            FreeCard(cards[i]);
+        }
+    }
+}
+
+bool test_CreateClassicCard()
+{
+    for (int number = 2; number < 11; number++)
+    {
+        for (int color = 0; color < NB_COLORS; color++)
+        {
+            card c1 = CreateClassicCard(color, number);
+
+            // card with same color and number
+            card c2 = CreateClassicCard(color, number);
+
+            // card with same color and diferent number
+            card c3 = CreateClassicCard(color, number != 10 ? number + 1 : number - 1);
+
+            // card with same number but a different color
+            card c4 = CreateClassicCard(color == 0 ? HEARTS : color - 1,number);
+
+            // special cards with the same color
+            card c5 = CreateSpeCard(KING, color);
+            card c6 = CreateSpeCard(QUEEN, color);
+            card c7 = CreateSpeCard(JACK, color);
+            card c8 = CreateSpeCard(ACE, color);
+            if (!AreEqual(c1, c2) || AreEqual(c1, c3) || AreEqual(c1, c4) || AreEqual(c1, c5) || AreEqual(c1, c6) || AreEqual(c1, c7) || AreEqual(c1, c8))
+            {
+                FreeCards((card[]){c1, c2, c3, c4, c5, c6, c7, c8}, 8);
+                return false;
+            }
+            FreeCards((card[]){c1, c2, c3, c4, c5, c6, c7, c8}, 8);
+        }
+    }
+    return true;
+}
+
+bool test_CreateSpeCard()
+{
+    // init seed with current hour
+    srand(time(NULL));
+
+    SpecialCardType types[] = {ACE, JACK, QUEEN, KING};
+    for (int i = 0; i < NB_NAMES; i++)
+    {
+        printf("1");
+        for (int color = 0; color < NB_COLORS; color++)
+        {
+            card c1 = CreateSpeCard(types[i], color);
+            printf("2");
+            // card with same type and color
+            card c2 = CreateSpeCard(types[i], color);
+            printf("3");
+            // card with same type but a different color
+            card c3 = CreateSpeCard(types[i], color == 0 ? HEARTS : color - 1);
+            printf("4");
+            // basic card with the same color
+            card c4 = CreateClassicCard(color, 6);
+            if (!AreEqual(c1, c2) || AreEqual(c1, c3) || AreEqual(c1, c4))
+            {
+                printf("5");
+                FreeCards((card[]){c1, c2, c3, c4}, 4);
+                return false;
+            }
+            FreeCards((card[]){c1, c2, c3, c4}, 4);
+        }
+    }
+    return true;
+}
+
+void usage(char *argv[])
+{
     fprintf(stderr, "Usage: %s <testname> [<...>]\n", argv[0]);
     exit(EXIT_FAILURE);
 }
 
-int main(int argc, char *argv[]) {
-    if (argc != 2) {
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+    {
         usage(argv);
     }
 
     fprintf(stderr, "=> Start test \"%s\"\n", argv[1]);
 
     bool ok = false;
-    if(strcmp("CreatePack", argv[1]) == 0) {
+    /*if (strcmp("CreatePack", argv[1]) == 0)
+    {
         ok = test_CreatePack();
-    } else if(strcmp("IsEmptyPack", argv[1]) == 0) {
+    }*/
+    /*else*/ if (strcmp("CreateClassicCard", argv[1]) == 0)
+    {
+        ok = test_CreateClassicCard();
+    }
+    /*else if (strcmp("IsEmptyPack", argv[1]) == 0)
+    {
         ok = test_IsEmptyPack();
-    } else if(strcmp("AddCardPack", argv[1]) == 0) {
+    }*/
+    else if (strcmp("CreateSpeCard", argv[1]) == 0)
+    {
+        ok = test_CreateSpeCard();
+    }
+    /*else if (strcmp("AreEquivalent", argv[1]) == 0)
+    {
+        ok = test_AreEquivalent();
+    }
+    else if (strcmp("FreeCard", argv[1]) == 0)
+    {
+        ok = test_FreeCard();
+    }
+    else if (strcmp("CreatePick", argv[1]) == 0)
+    {
+        ok = test_CreatePick();
+    }
+    else if (strcmp("IsEmptyPick", argv[1]) == 0)
+    {
+        ok = test_IsEmptyPick();
+    }
+    else if (strcmp("AddCardPick", argv[1]) == 0)
+    {
+        ok = test_AddCardPick();
+    }
+    else if (strcmp("PickCard", argv[1]) == 0)
+    {
+        ok = test_PickCard();
+    }
+    else if (strcmp("FreePick", argv[1]) == 0)
+    {
+        ok = test_FreePick();
+    }
+    else if (strcmp("AddCardPack", argv[1]) == 0)
+    {
         ok = test_AddCardPack();
-    } else if(strcmp("CreateFullPack", argv[1]) == 0) {
+    }
+    else if (strcmp("AddCardPick", argv[1]) == 0)
+    {
+        ok = test_AddCardPick();
+    }
+    else if (strcmp("CreateFullPack", argv[1]) == 0)
+    {
         ok = test_CreateFullPack();
-    } else if(strcmp("ShufflePack", argv[1]) == 0) {
+    }
+    else if (strcmp("ShufflePack", argv[1]) == 0)
+    {
         ok = test_ShufflePack();
-    } else if(strcmp("FreePack", argv[1]) == 0) {
+    }
+    else if (strcmp("FreePack", argv[1]) == 0)
+    {
         ok = test_FreePack();
-    } else if(strcmp("RemoveCardPack", argv[1]) == 0) {
+    }
+    else if (strcmp("RemoveCardPack", argv[1]) == 0)
+    {
         ok = test_RemoveCardPack();
-    } else {
+    }*/
+    else
+    {
         fprintf(stderr, "Error: test \"%s\" not found!\n", argv[1]);
         exit(EXIT_FAILURE);
-    } 
-    if (ok) {
+    }
+    if (ok)
+    {
         fprintf(stderr, "Test \"%s\" finished: SUCCESS\n", argv[1]);
         return EXIT_SUCCESS;
-    } else {
+    }
+    else
+    {
         fprintf(stderr, "Test \"%s\" finished: FAILURE\n", argv[1]);
         return EXIT_FAILURE;
     }

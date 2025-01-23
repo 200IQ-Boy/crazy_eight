@@ -5,16 +5,16 @@
 #include <time.h>
 #include <assert.h>
 
-card CreateClassicCard(color color,uint number)
+card CreateClassicCard(color color, uint number)
 {
-    //check parameters validity
-    assert(color < NB_COLORS && color >= SPADES) ;
+    // check parameters validity
+    assert(color < NB_COLORS && color >= SPADES);
     assert(number >= 2 && number <= 10);
 
     card c = malloc(sizeof(s_card));
-    if(c == NULL)
+    if (c == NULL)
     {
-        fprintf(stderr,"Failed to create a new card\n");
+        fprintf(stderr, "Failed to create a new card\n");
         exit(EXIT_FAILURE);
     }
     c->is_special = false;
@@ -23,102 +23,115 @@ card CreateClassicCard(color color,uint number)
     return c;
 }
 
-card CreateSpeCard(SpecialCardType name , color color)
+card CreateSpeCard(SpecialCardType name, color color)
 {
-    //check parameters validity
+    // check parameters validity
     assert(color < NB_COLORS && color >= SPADES);
 
     card c = malloc(sizeof(s_card));
-    if(c == NULL)
+    if (c == NULL)
     {
-        fprintf(stderr,"Failed to create a new special card\n");
+        fprintf(stderr, "Failed to create a new special card\n");
         exit(EXIT_FAILURE);
     }
     c->is_special = true;
 
     switch (name)
     {
-    case ACE:
-        c->card_type.s_card.color = color;
-        c->card_type.s_card.name = ACE;
-        break;
-    case JACK:
-        c->card_type.s_card.color = color;
-        c->card_type.s_card.name = JACK;
-        break;
-    case QUEEN:
-        c->card_type.s_card.color = color;
-        c->card_type.s_card.name = QUEEN;
-        break;
-    case KING:
-        c->card_type.s_card.color = color;
-        c->card_type.s_card.name = KING;
-        break;
-    default:
-        fprintf(stderr,"The name given is not a possible speacial card\n");
-        exit(EXIT_FAILURE);
+        case ACE:
+            c->card_type.s_card.color = color;
+            c->card_type.s_card.name = ACE;
+            break;
+        case JACK:
+            c->card_type.s_card.color = color;
+            c->card_type.s_card.name = JACK;
+            break;
+        case QUEEN:
+            c->card_type.s_card.color = color;
+            c->card_type.s_card.name = QUEEN;
+            break;
+        case KING:
+            c->card_type.s_card.color = color;
+            c->card_type.s_card.name = KING;
+            break;
+        default:
+            fprintf(stderr, "The name given is not a possible speacial card\n");
+            exit(EXIT_FAILURE);
     }
-    
+
     return c;
 }
 
-bool AreEquivalent(card c1 , card c2)
+bool AreEquivalent(card c1, card c2)
 {
     // test parameters validity
-    if(c1 == NULL || c2 == NULL)
+    if (c1 == NULL || c2 == NULL)
     {
-        fprintf(stderr,"One of the cards is NULL\n");
+        fprintf(stderr, "One of the cards is NULL\n");
         exit(EXIT_FAILURE);
     }
     // if cards are special we compare the name or the color
-    if(c1->is_special && c2->is_special)
+    if (c1->is_special && c2->is_special)
     {
         return c1->card_type.s_card.name == c2->card_type.s_card.name || c1->card_type.s_card.color == c2->card_type.s_card.color;
     }
     // if cards are not special we compare the color or the number
-    else if(!c1->is_special && !c2->is_special)
+    else if (!c1->is_special && !c2->is_special)
     {
         return c1->card_type.b_card.color == c2->card_type.b_card.color || c1->card_type.b_card.value == c2->card_type.b_card.value;
     }
-    //check cards of different types are equivalent
-    else if(c1->is_special && !c2->is_special)
+    // check cards of different types are equivalent
+    else if (c1->is_special && !c2->is_special)
     {
         return c1->card_type.s_card.color == c2->card_type.b_card.color;
     }
-    else if(!c1->is_special && c2->is_special)
+    else if (!c1->is_special && c2->is_special)
     {
         return c1->card_type.b_card.color == c2->card_type.s_card.color;
     }
 }
 
-void PrintCard(card c) 
+bool AreEqual(card c1, card c2) 
 {
-    if(c == NULL)
+    if(c1->is_special && c2->is_special) 
     {
-        fprintf(stderr,"The card is NULL\n");
+        return c1->card_type.s_card.color == c2->card_type.s_card.color && c1->card_type.s_card.name == c2->card_type.s_card.name;
+    }
+    if(!c1->is_special && !c2->is_special)
+    {
+        return c1->card_type.b_card.color == c2->card_type.b_card.color && c1->card_type.b_card.value == c2->card_type.b_card.value;
+    }
+    return false;
+}
+
+void PrintCard(card c)
+{
+    if (c == NULL)
+    {
+        fprintf(stderr, "The card is NULL\n");
         exit(EXIT_FAILURE);
     }
-    if(c->is_special)
+    if (c->is_special)
     {
         if (c->card_type.s_card.name == ACE)
         {
             printf(".------.\n|A     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
-            case SPADES:
-                printf("♤");
-                break;
-            case HEARTS:
-                printf("♡");
-                break;
-            case DIAMONDS:
-                printf("♢");
-                break;
-            case CLUBS:
-                printf("♧");
-                break;
-            default:
-                break;
+                case SPADES:
+                    printf("♤");
+                    break;
+                case HEARTS:
+                    printf("♡");
+                    break;
+                case DIAMONDS:
+                    printf("♢");
+                    break;
+                case CLUBS:
+                    printf("♧");
+                    break;
+                default:
+                    break;
             }
             printf("   |\n|      |\n|     A|\n'------'\n");
         }
@@ -127,20 +140,20 @@ void PrintCard(card c)
             printf(".------.\n|J     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
-            case SPADES:
-                printf("♤");
-                break;
-            case HEARTS:
-                printf("♡");
-                break;
-            case DIAMONDS:
-                printf("♢");
-                break;
-            case CLUBS:
-                printf("♧");
-                break;
-            default:
-                break;
+                case SPADES:
+                    printf("♤");
+                    break;
+                case HEARTS:
+                    printf("♡");
+                    break;
+                case DIAMONDS:
+                    printf("♢");
+                    break;
+                case CLUBS:
+                    printf("♧");
+                    break;
+                default:
+                    break;
             }
             printf("   |\n|      |\n|     J|\n'------'\n");
         }
@@ -149,20 +162,20 @@ void PrintCard(card c)
             printf(".------.\n|Q     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
-            case SPADES:
-                printf("♤");
-                break;
-            case HEARTS:
-                printf("♡");
-                break;
-            case DIAMONDS:
-                printf("♢");
-                break;
-            case CLUBS:
-                printf("♧");
-                break;
-            default:
-                break;
+                case SPADES:
+                    printf("♤");
+                    break;
+                case HEARTS:
+                    printf("♡");
+                    break;
+                case DIAMONDS:
+                    printf("♢");
+                    break;
+                case CLUBS:
+                    printf("♧");
+                    break;
+                default:
+                    break;
             }
             printf("   |\n|      |\n|     Q|\n'------'\n");
         }
@@ -171,34 +184,33 @@ void PrintCard(card c)
             printf(".------.\n|K     |\n|      |\n|  ");
             switch (c->card_type.s_card.color)
             {
-            case SPADES:
-                printf("♤");
-                break;
-            case HEARTS:
-                printf("♡");
-                break;
-            case DIAMONDS:
-                printf("♢");
-                break;
-            case CLUBS:
-                printf("♧");
-                break;
-            default:
-                break;
+                case SPADES:
+                    printf("♤");
+                    break;
+                case HEARTS:
+                    printf("♡");
+                    break;
+                case DIAMONDS:
+                    printf("♢");
+                    break;
+                case CLUBS:
+                    printf("♧");
+                    break;
+                default:
+                    break;
             }
             printf("   |\n|      |\n|     K|\n'------'\n");
-        
         }
     }
     else
     {
-        if(c->card_type.b_card.value == 10)
+        if (c->card_type.b_card.value == 10)
         {
-            printf(".------.\n|%d    |\n|      |\n|  ",c->card_type.b_card.value);
+            printf(".------.\n|%d    |\n|      |\n|  ", c->card_type.b_card.value);
         }
         else
         {
-            printf(".------.\n|%d     |\n|      |\n|  ",c->card_type.b_card.value);
+            printf(".------.\n|%d     |\n|      |\n|  ", c->card_type.b_card.value);
         }
         switch (c->card_type.s_card.color)
         {
@@ -217,20 +229,20 @@ void PrintCard(card c)
             default:
                 break;
         }
-        if(c->card_type.b_card.value == 10)
+        if (c->card_type.b_card.value == 10)
         {
-            printf("   |\n|      |\n|    %d|\n'------'\n",c->card_type.b_card.value);
+            printf("   |\n|      |\n|    %d|\n'------'\n", c->card_type.b_card.value);
         }
         else
         {
-            printf("   |\n|      |\n|     %d|\n'------'\n",c->card_type.b_card.value);
+            printf("   |\n|      |\n|     %d|\n'------'\n", c->card_type.b_card.value);
         }
     }
 }
 
 void FreeCard(card c)
 {
-    if(c != NULL)
+    if (c != NULL)
     {
         free(c);
     }
@@ -239,35 +251,38 @@ void FreeCard(card c)
 pack CreatePack()
 {
     pack n_pack = malloc(sizeof(s_pack));
-    if(n_pack == NULL)
+    if (n_pack == NULL)
     {
-        fprintf(stderr,"Failed to create a new pack\n");
+        fprintf(stderr, "Failed to create a new pack\n");
         exit(EXIT_FAILURE);
     }
-    n_pack->pack_cards = malloc(52*sizeof(card));
-    if(n_pack->pack_cards == NULL)
+    n_pack->pack_cards = malloc(52 * sizeof(card));
+    if (n_pack->pack_cards == NULL)
     {
-        fprintf(stderr,"Failed to create a new pack\n");
+        fprintf(stderr, "Failed to create a new pack\n");
         free(n_pack);
         exit(EXIT_FAILURE);
     }
     n_pack->taille = 0;
-    return n_pack; 
+    return n_pack;
 }
 
 bool IsEmptyPack(pack p)
 {
-    if(p == NULL || p->taille == 0)
+    if (p == NULL || p->taille == 0)
         return true;
     return false;
 }
 
-pack AddCardPack(pack p, card c) {
-    if (p == NULL || c == NULL) {
+pack AddCardPack(pack p, card c)
+{
+    if (p == NULL || c == NULL)
+    {
         fprintf(stderr, "The pack or the card is NULL\n");
         exit(EXIT_FAILURE);
     }
-    if (p->taille == 52) {
+    if (p->taille == 52)
+    {
         fprintf(stderr, "The pack is full\n");
         exit(EXIT_FAILURE);
     }
@@ -276,26 +291,25 @@ pack AddCardPack(pack p, card c) {
     return p;
 }
 
-
 pack CreateFullPack()
 {
     pack f_pack = CreatePack();
-    
+
     // add of basic cards in the pack
-    for(int color = 0; color < NB_COLORS ; color++)
+    for (int color = 0; color < NB_COLORS; color++)
     {
-        for(int value = 2; value < 11; value++)
+        for (int value = 2; value < 11; value++)
         {
-            AddCardPack(f_pack,CreateClassicCard(color,value));
+            AddCardPack(f_pack, CreateClassicCard(color, value));
         }
     }
     // add of special cards
-    for(int color = 0; color < NB_COLORS ; color++)
+    for (int color = 0; color < NB_COLORS; color++)
     {
-        AddCardPack(f_pack,CreateSpeCard(ACE,color));
-        AddCardPack(f_pack,CreateSpeCard(JACK,color));
-        AddCardPack(f_pack,CreateSpeCard(QUEEN,color));
-        AddCardPack(f_pack,CreateSpeCard(KING,color));
+        AddCardPack(f_pack, CreateSpeCard(ACE, color));
+        AddCardPack(f_pack, CreateSpeCard(JACK, color));
+        AddCardPack(f_pack, CreateSpeCard(QUEEN, color));
+        AddCardPack(f_pack, CreateSpeCard(KING, color));
     }
     return f_pack;
 }
@@ -303,15 +317,15 @@ pack CreateFullPack()
 pack ShufflePack(pack p)
 {
     // test parameters validity
-    if(IsEmptyPack(p))
+    if (IsEmptyPack(p))
     {
-        fprintf(stderr,"Empty pack can't be shuffled\n");
+        fprintf(stderr, "Empty pack can't be shuffled\n");
         exit(EXIT_FAILURE);
     }
 
     // Fisher-Yates Shuffle Algorithm
     srand(time(NULL));
-    for (int i = p->taille - 1; i > 0; i--) 
+    for (int i = p->taille - 1; i > 0; i--)
     {
         int j = rand() % (i + 1);
         card tmp = p->pack_cards[i];
@@ -323,7 +337,7 @@ pack ShufflePack(pack p)
 
 void FreePack(pack p)
 {
-    if(p != NULL)
+    if (p != NULL)
     {
         free(p->pack_cards);
         free(p);
@@ -332,72 +346,72 @@ void FreePack(pack p)
 
 pack RemoveCardPack(pack p, card c)
 {
-    if(IsEmptyPack(p) || c == NULL)
+    if (IsEmptyPack(p) || c == NULL)
     {
-        fprintf(stderr,"The pack is empty or the card is NULL\n");
+        fprintf(stderr, "The pack is empty or the card is NULL\n");
         return p;
     }
 
-    if(c->is_special)
+    if (c->is_special)
     {
-        for(int i = 0; i < p->taille; i++)
+        for (int i = 0; i < p->taille; i++)
         {
-            if(p->pack_cards[i]->is_special && p->pack_cards[i]->card_type.s_card.color == c->card_type.s_card.color && p->pack_cards[i]->card_type.s_card.name == c->card_type.s_card.name)
+            if (p->pack_cards[i]->is_special && p->pack_cards[i]->card_type.s_card.color == c->card_type.s_card.color && p->pack_cards[i]->card_type.s_card.name == c->card_type.s_card.name)
             {
-                for(int j = i; j < p->taille - 1; j++)
+                for (int j = i; j < p->taille - 1; j++)
                 {
-                    p->pack_cards[j] = p->pack_cards[j+1];
+                    p->pack_cards[j] = p->pack_cards[j + 1];
                 }
                 p->taille--;
                 return p;
             }
         }
     }
-    else 
+    else
     {
-        for(int i = 0; i < p->taille; i++)
+        for (int i = 0; i < p->taille; i++)
         {
-            if(!p->pack_cards[i]->is_special && p->pack_cards[i]->card_type.b_card.color == c->card_type.b_card.color && p->pack_cards[i]->card_type.b_card.value == c->card_type.b_card.value)
+            if (!p->pack_cards[i]->is_special && p->pack_cards[i]->card_type.b_card.color == c->card_type.b_card.color && p->pack_cards[i]->card_type.b_card.value == c->card_type.b_card.value)
             {
-                for(int j = i; j < p->taille - 1; j++)
+                for (int j = i; j < p->taille - 1; j++)
                 {
-                    p->pack_cards[j] = p->pack_cards[j+1];
+                    p->pack_cards[j] = p->pack_cards[j + 1];
                 }
                 p->taille--;
                 return p;
             }
         }
     }
-    fprintf(stderr,"The card is not in the pack\n");
+    fprintf(stderr, "The card is not in the pack\n");
     return p;
 }
 
-pick CreatePick() 
+pick CreatePick()
 {
     pick pioche = malloc(sizeof(s_pick));
-    if(pioche == NULL)
+    if (pioche == NULL)
     {
-        fprintf(stderr,"Failed to create a new Pick\n");
+        fprintf(stderr, "Failed to create a new Pick\n");
         exit(EXIT_FAILURE);
     }
     pioche->next = NULL;
-    pioche->picked = NULL;  
+    pioche->picked = NULL;
     return pioche;
 }
 
 bool IsEmptyPick(pick p)
 {
-    return p == NULL || p->picked == NULL ;
+    return p == NULL || p->picked == NULL;
 }
 
-pick AddCardPick(pick p , card c )
+pick AddCardPick(pick p, card c)
 {
-    if(p == NULL || c == NULL)
+    if (p == NULL || c == NULL)
     {
-        fprintf(stderr,"The pick or the card is NULL\n");
+        fprintf(stderr, "The pick or the card is NULL\n");
         exit(EXIT_FAILURE);
     }
-    if(p->picked == NULL)
+    if (p->picked == NULL)
     {
         p->picked = c;
         return p;
@@ -411,9 +425,9 @@ pick AddCardPick(pick p , card c )
 
 card PickCard(pick p)
 {
-    if(IsEmptyPick(p))
+    if (IsEmptyPick(p))
     {
-        fprintf(stderr,"The pick is empty\n");
+        fprintf(stderr, "The pick is empty\n");
         exit(EXIT_FAILURE);
     }
     card res = p->picked;
@@ -425,11 +439,11 @@ card PickCard(pick p)
 
 void FreePick(pick p)
 {
-    if(!IsEmptyPick(p))
+    if (!IsEmptyPick(p))
     {
         free(p);
         pick tmp = p->next;
-        while(tmp != NULL)
+        while (tmp != NULL)
         {
             pick q = tmp->next;
             free(tmp);
@@ -437,4 +451,3 @@ void FreePick(pick p)
         }
     }
 }
- 

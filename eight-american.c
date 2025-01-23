@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "cards.h"
 
-int main() {
+int main()
+{
     return EXIT_SUCCESS;
 }
