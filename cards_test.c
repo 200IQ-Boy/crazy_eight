@@ -81,17 +81,77 @@ bool test_CreateSpeCard()
 
 bool test_FreeCard()
 {
-    //try to free a classic card and a special card
-    card c1 = CreateClassicCard(0, 2);
+    // try to free a classic card and a special card
+    card c1 = CreateClassicCard(SPADES, 2);
     card c2 = CreateSpeCard(ACE, 0);
     FreeCard(c1);
-    FreeCard(2);
+    FreeCard(c2);
     return true;
 }
-bool test_CreatePack()
+
+bool test_AreEquivalent()
 {
-   
+    for (int color = 0; color < NB_COLORS; color++)
+    {
+        /*We first ckeck equivalence between classic card and classic card / special card*/
+        for (uint number = 2; number < 11; number++)
+        {
+            // check if a card is equivalent to cards with same color but different number
+            card c1 = CreateClassicCard(color, number);
+            for (uint num = number + 1; num < 11; num++)
+            {
+                card c2 = CreateClassicCard(color, num);
+                if (!AreEquivalent(c1, c2))
+                {
+                    FreeCards((card[]){c1, c2}, 2);
+                    return false;
+                }
+                FreeCard(c2);
+            }
+
+            // check if a special card and a classic card with same color are equivalent
+            card c3 = CreateSpeCard(KING, color);
+            card c4 = CreateSpeCard(QUEEN, color);
+            card c5 = CreateSpeCard(JACK, color);
+            if (!AreEquivalent(c1, c3) || !AreEquivalent(c1, c4) || !AreEquivalent(c1, c5))
+            {
+                FreeCards((card[]){c1, c3, c4, c5}, 4);
+                return false;
+            }
+
+            // check if two cards with different color but same numbers are equivalent
+            card c6 = CreateClassicCard(((color + 1) % NB_COLORS), number);
+            if (!AreEquivalent(c1, c6))
+            {
+                FreeCards((card[]){c1, c3, c4, c5, c6}, 5);
+                return false;
+            }
+
+            // check if two cards with nothing in common are not equivalent
+            card c7 = CreateClassicCard(((color + 1) % NB_COLORS), number == 10 ? 2 : number + 1);
+            card c8 = CreateSpeCard(JACK, ((color + 1) % NB_COLORS));
+            if (AreEquivalent(c1, c7) || AreEquivalent(c1, c8))
+            {
+                FreeCards((card[]){c1, c3, c4, c5, c6, c7, c8}, 7);
+                return false;
+            }
+            FreeCards((card[]){c1, c3, c4, c5, c6, c7, c8}, 7);
+        }
+
+        /*Then we check equivalence between two special cards*/
+        card c9 = CreateSpeCard(JACK, color);
+        card c10 = CreateSpeCard(JACK, ((color + 1) % NB_COLORS));
+        card c11 = CreateSpeCard(KING, ((color + 1) % NB_COLORS));
+        card c12 = CreateSpeCard(QUEEN, ((color + 1) % NB_COLORS));
+        if (!AreEquivalent(c9, c10) || AreEquivalent(c9, c11) || AreEquivalent(c9, c11))
+        {
+            FreeCards((card[]){c9, c10, c11, c12}, 4);
+            return false;
+        }
+    }
+    return true;
 }
+
 void usage(char *argv[])
 {
     fprintf(stderr, "Usage: %s <testname> [<...>]\n", argv[0]);
@@ -124,58 +184,50 @@ int main(int argc, char *argv[])
     {
         ok = test_CreateSpeCard();
     }
-    /*else if (strcmp("AreEquivalent", argv[1]) == 0)
+    else if (strcmp("AreEquivalent", argv[1]) == 0)
     {
         ok = test_AreEquivalent();
-    }*/
+    }
     else if (strcmp("FreeCard", argv[1]) == 0)
     {
         ok = test_FreeCard();
-    }/*s
-    else if (strcmp("CreatePick", argv[1]) == 0)
-    {
-        ok = test_CreatePick();
-    }
-    else if (strcmp("IsEmptyPick", argv[1]) == 0)
-    {
-        ok = test_IsEmptyPick();
-    }
-    else if (strcmp("AddCardPick", argv[1]) == 0)
-    {
-        ok = test_AddCardPick();
-    }
-    else if (strcmp("PickCard", argv[1]) == 0)
-    {
-        ok = test_PickCard();
-    }
-    else if (strcmp("FreePick", argv[1]) == 0)
-    {
-        ok = test_FreePick();
-    }
-    else if (strcmp("AddCardPack", argv[1]) == 0)
-    {
-        ok = test_AddCardPack();
-    }
-    else if (strcmp("AddCardPick", argv[1]) == 0)
-    {
-        ok = test_AddCardPick();
-    }
-    else if (strcmp("CreateFullPack", argv[1]) == 0)
-    {
-        ok = test_CreateFullPack();
-    }
-    else if (strcmp("ShufflePack", argv[1]) == 0)
-    {
-        ok = test_ShufflePack();
-    }
-    else if (strcmp("FreePack", argv[1]) == 0)
-    {
-        ok = test_FreePack();
-    }
-    else if (strcmp("RemoveCardPack", argv[1]) == 0)
-    {
-        ok = test_RemoveCardPack();
-    }*/
+    } /*
+     else if (strcmp("CreatePick", argv[1]) == 0)
+     {
+         ok = test_CreatePick();
+     }
+     else if (strcmp("IsEmptyPick", argv[1]) == 0)
+     {
+         ok = test_IsEmptyPick();
+     }
+     else if (strcmp("AddCardPick", argv[1]) == 0)
+     {
+         ok = test_AddCardPick();
+     }
+     else if (strcmp("PickCard", argv[1]) == 0)
+     {
+         ok = test_PickCard();
+     }
+     else if (strcmp("FreePick", argv[1]) == 0)
+     {
+         ok = test_FreePick();
+     }
+     else if (strcmp("CreateFullPack", argv[1]) == 0)
+     {
+         ok = test_CreateFullPack();
+     }
+     else if (strcmp("ShufflePack", argv[1]) == 0)
+     {
+         ok = test_ShufflePack();
+     }
+     else if (strcmp("FreePack", argv[1]) == 0)
+     {
+         ok = test_FreePack();
+     }
+     else if (strcmp("RemoveCardPack", argv[1]) == 0)
+     {
+         ok = test_RemoveCardPack();
+     }*/
     else
     {
         fprintf(stderr, "Error: test \"%s\" not found!\n", argv[1]);

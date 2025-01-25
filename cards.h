@@ -154,8 +154,8 @@ bool AreEquivalent(card c1, card c2);
 void FreeCard(card c);
 
 /**
- * @brief Generates a complete deck of cards.
- * @details This function creates a standard pack aimed to contain 52 playing cards,
+ * @brief Generates a  deck object.
+ * This function creates a standard pack aimed to contain 52 playing cards,
  * including all suits (Hearts, Diamonds, Clubs, Spades) and
  * values (2 to 10, Jack, Queen, King, Ace).
  * @return A pack that can store 52 cards.
