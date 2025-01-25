@@ -31,7 +31,7 @@ bool test_CreateClassicCard()
             card c3 = CreateClassicCard(color, number != 10 ? number + 1 : number - 1);
 
             // card with same number but a different color
-            card c4 = CreateClassicCard(color == 0 ? HEARTS : color - 1,number);
+            card c4 = CreateClassicCard(color == 0 ? HEARTS : color - 1, number);
 
             // special cards with the same color
             card c5 = CreateSpeCard(KING, color);
@@ -51,9 +51,6 @@ bool test_CreateClassicCard()
 
 bool test_CreateSpeCard()
 {
-    // init seed with current hour
-    srand(time(NULL));
-
     SpecialCardType types[] = {ACE, JACK, QUEEN, KING};
     for (int i = 0; i < NB_NAMES; i++)
     {
@@ -82,6 +79,19 @@ bool test_CreateSpeCard()
     return true;
 }
 
+bool test_FreeCard()
+{
+    //try to free a classic card and a special card
+    card c1 = CreateClassicCard(0, 2);
+    card c2 = CreateSpeCard(ACE, 0);
+    FreeCard(c1);
+    FreeCard(2);
+    return true;
+}
+bool test_CreatePack()
+{
+   
+}
 void usage(char *argv[])
 {
     fprintf(stderr, "Usage: %s <testname> [<...>]\n", argv[0]);
@@ -117,11 +127,11 @@ int main(int argc, char *argv[])
     /*else if (strcmp("AreEquivalent", argv[1]) == 0)
     {
         ok = test_AreEquivalent();
-    }
+    }*/
     else if (strcmp("FreeCard", argv[1]) == 0)
     {
         ok = test_FreeCard();
-    }
+    }/*s
     else if (strcmp("CreatePick", argv[1]) == 0)
     {
         ok = test_CreatePick();
