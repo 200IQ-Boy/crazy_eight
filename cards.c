@@ -85,7 +85,7 @@ bool AreEquivalent(card c1, card c2)
     {
         return c1->card_type.s_card.color == c2->card_type.b_card.color;
     }
-    else if (!c1->is_special && c2->is_special)
+    else 
     {
         return c1->card_type.b_card.color == c2->card_type.s_card.color;
     }
@@ -274,21 +274,21 @@ bool IsEmptyPack(pack p)
     return false;
 }
 
-pack AddCardPack(pack p, card c)
+bool AddCardPack(pack p, card c)
 {
     if (p == NULL || c == NULL)
     {
         fprintf(stderr, "The pack or the card is NULL\n");
-        exit(EXIT_FAILURE);
+       return false;
     }
     if (p->taille == 52)
     {
         fprintf(stderr, "The pack is full\n");
-        exit(EXIT_FAILURE);
+        return false;
     }
     p->pack_cards[p->taille] = c;
     p->taille++;
-    return p;
+    return true;
 }
 
 pack CreateFullPack()
@@ -344,12 +344,12 @@ void FreePack(pack p)
     }
 }
 
-pack RemoveCardPack(pack p, card c)
+bool RemoveCardPack(pack p, card c)
 {
     if (IsEmptyPack(p) || c == NULL)
     {
         fprintf(stderr, "The pack is empty or the card is NULL\n");
-        return p;
+        return false;
     }
 
     if (c->is_special)
@@ -363,7 +363,7 @@ pack RemoveCardPack(pack p, card c)
                     p->pack_cards[j] = p->pack_cards[j + 1];
                 }
                 p->taille--;
-                return p;
+                return true;
             }
         }
     }
@@ -378,12 +378,12 @@ pack RemoveCardPack(pack p, card c)
                     p->pack_cards[j] = p->pack_cards[j + 1];
                 }
                 p->taille--;
-                return p;
+                return true;
             }
         }
     }
     fprintf(stderr, "The card is not in the pack\n");
-    return p;
+    return false;
 }
 
 pick CreatePick()

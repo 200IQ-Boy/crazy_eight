@@ -152,6 +152,29 @@ bool test_AreEquivalent()
     return true;
 }
 
+ bool test_IsEmptyPack()
+ {
+    // createPack() is assumed to create an empty pack
+    pack p1 = CreatePack(); 
+    pack p2 = CreateFullPack();
+    pack p3 = CreatePack();
+
+    card c = CreateClassicCard(SPADES,4);
+    AddCardPack(p3,c);
+
+    if(!IsEmptyPack(p1) || IsEmptyPack(p2) || IsEmptyPack(p3))
+    {
+        FreePack(p1);
+        FreePack(p2);
+        FreePack(p3);
+        return false;
+    }
+    FreePack(p1);
+    FreePack(p2);
+    FreePack(p3);
+    return true;
+ }
+
 void usage(char *argv[])
 {
     fprintf(stderr, "Usage: %s <testname> [<...>]\n", argv[0]);
@@ -176,10 +199,10 @@ int main(int argc, char *argv[])
     {
         ok = test_CreateClassicCard();
     }
-    /*else if (strcmp("IsEmptyPack", argv[1]) == 0)
+    else if (strcmp("IsEmptyPack", argv[1]) == 0)
     {
         ok = test_IsEmptyPack();
-    }*/
+    }
     else if (strcmp("CreateSpeCard", argv[1]) == 0)
     {
         ok = test_CreateSpeCard();

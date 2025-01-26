@@ -175,18 +175,17 @@ bool IsEmptyPack(pack p);
  * @brief add a card in the pack
  * @param p A pack where to add the card
  * @param c the card to be added
- * @return a pack with the added card
+ * @return true if the card has been added
  */
-pack AddCardPack(pack p, card c);
+bool AddCardPack(pack p, card c);
 
 /**
  * @brief remove  a card from the pack
- *
- * @param p
- * @param c
- * @return pack
+ * @param p a pack
+ * @param c the specific card
+ * @return true if the card has been removed
  */
-pack RemoveCardPack(pack p, card c);
+bool RemoveCardPack(pack p, card c);
 
 /**
  * @brief Create a pack object
