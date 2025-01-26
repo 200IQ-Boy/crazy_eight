@@ -152,8 +152,8 @@ bool test_AreEquivalent()
     return true;
 }
 
- bool test_IsEmptyPack()
- {
+bool test_IsEmptyPack()
+{
     // createPack() is assumed to create an empty pack
     pack p1 = CreatePack(); 
     pack p2 = CreateFullPack();
@@ -173,7 +173,52 @@ bool test_AreEquivalent()
     FreePack(p2);
     FreePack(p3);
     return true;
- }
+}
+
+bool test_AddCardPack() 
+{
+    // trying to add a card in a full pack
+    pack p1 = CreateFullPack();
+    card c = CreateClassicCard(HEARTS,2);
+    if(AddCardPack(p1,c))
+    {
+        FreePack(p1);
+        FreeCard(c);
+        return false;
+    }
+
+    // tryng to add all the cards type in a pack
+    pack p2 = CreatePack();
+    for(int color = 0 ; color < NB_COLORS ; color++)
+    {
+        // adding basic cards
+        for(int number = 2 ; number < 11 ; number++)
+        {
+            card c = CreateClassicCard(color,number);
+            if(!AddCardPack(p2,c))
+            {
+                FreeCard(c);
+                return false;
+            }
+            RemoveCardPack(p2,c);
+            FreeCard(c);
+        }
+
+        // adding special cards
+        for(int name = 0 ; name < NB_NAMES ; name++)
+        {
+            card c = CreateSpeCard(name == 0 ? ACE : 14 - name,color);
+            if(!AddCardPack(p2,c))
+            {
+                FreeCard(c);
+                return false;
+            }
+            RemoveCardPack(p2,c);
+            FreeCard(c);
+        }
+    }
+    return true;
+}
 
 void usage(char *argv[])
 {
@@ -214,7 +259,11 @@ int main(int argc, char *argv[])
     else if (strcmp("FreeCard", argv[1]) == 0)
     {
         ok = test_FreeCard();
-    } /*
+    } 
+    else if (strcmp("AddCardPack",argv[1]) == 0)
+    {
+        ok = test_AddCardPack();
+    }/*
      else if (strcmp("CreatePick", argv[1]) == 0)
      {
          ok = test_CreatePick();
