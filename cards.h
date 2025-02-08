@@ -92,6 +92,7 @@ typedef s_pick* pick;
  * @param color
  * @param number number must be a value in [1,10]
  * @return card
+ * @warning exit the program if allocation fails
  */
 card CreateClassicCard(color color, uint number);
 
@@ -109,7 +110,7 @@ card CreateClassicCard(color color, uint number);
  *             - 13: King
  *             - 14: Ace
  * @return A `Card` structure initialized with the given suit and type.
- *
+ *@warning exit the program if allocation fails
  * @note This function assumes the special values are between 11 and 14.
  *       Other values are not handled.
  */
@@ -127,8 +128,7 @@ void PrintCard(card c);
  *  - color and type for special card
  * @param c1
  * @param c2
- * @return true
- * @return false
+ * @return true if cards are equals
  */
 bool AreEqual(card c1, card c2);
 
@@ -148,7 +148,6 @@ bool AreEquivalent(card c1, card c2);
 
 /**
  * @brief Free the allocated memory for the card
- *
  * @param c the card
  */
 void FreeCard(card c);
@@ -159,6 +158,7 @@ void FreeCard(card c);
  * including all suits (Hearts, Diamonds, Clubs, Spades) and
  * values (2 to 10, Jack, Queen, King, Ace).
  * @return A pack that can store 52 cards.
+ * @warning exit the program if allocation fails
  */
 pack CreatePack();
 
@@ -180,7 +180,7 @@ bool IsEmptyPack(pack p);
 bool AddCardPack(pack p, card c);
 
 /**
- * @brief remove  a card from the pack
+ * @brief remove  a card from the pack and free it
  * @param p a pack
  * @param c the specific card
  * @return true if the card has been removed
@@ -191,6 +191,7 @@ bool RemoveCardPack(pack p, card c);
  * @brief Create a pack object
  * with the 52 cards composing a crazy eight game (without Jokers)
  * @return pack
+ * * @warning exit the program if allocation fails
  */
 pack CreateFullPack();
 
@@ -212,6 +213,7 @@ void FreePack(pack p);
  * that will be use to store the  card remaining after
  * the split of cards to players
  * @return pick
+ * @warning exit the program if allocation fails
  */
 pick CreatePick();
 
@@ -228,6 +230,7 @@ bool IsEmptyPick(pick p);
  * @param p A pack where to add the card
  * @param c the card to be added
  * @return a pick with the new added card
+ * @warning exit the program if one or more parameters are null
  */
 pick AddCardPick(pick p, card c);
 
@@ -235,9 +238,10 @@ pick AddCardPick(pick p, card c);
  * @brief Pick a card in a pick
  * The pick given is automatically uploaded
  * @param p a pick
- * @return the card on top of the pick
+ * @return the card on top of the pick 
+ * @warning exit the program if the pick is empty
  */
-card PickCard(pick p);
+card PickCard(pick * p);
 
 /**
  * @brief Free the memory allocated for the pick

@@ -358,6 +358,7 @@ bool RemoveCardPack(pack p, card c)
         {
             if (p->pack_cards[i]->is_special && p->pack_cards[i]->card_type.s_card.color == c->card_type.s_card.color && p->pack_cards[i]->card_type.s_card.name == c->card_type.s_card.name)
             {
+                FreeCard(p->pack_cards[i]);
                 for (int j = i; j < p->taille - 1; j++)
                 {
                     p->pack_cards[j] = p->pack_cards[j + 1];
@@ -373,6 +374,7 @@ bool RemoveCardPack(pack p, card c)
         {
             if (!p->pack_cards[i]->is_special && p->pack_cards[i]->card_type.b_card.color == c->card_type.b_card.color && p->pack_cards[i]->card_type.b_card.value == c->card_type.b_card.value)
             {
+                FreeCard(p->pack_cards[i]);
                 for (int j = i; j < p->taille - 1; j++)
                 {
                     p->pack_cards[j] = p->pack_cards[j + 1];
@@ -423,17 +425,17 @@ pick AddCardPick(pick p, card c)
     return p;
 }
 
-card PickCard(pick p)
+card PickCard(pick * p)
 {
     if (IsEmptyPick(p))
     {
         fprintf(stderr, "The pick is empty\n");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
-    card res = p->picked;
-    pick tmp = p->next;
-    free(p);
-    p = tmp;
+    card res = (*p)->picked;
+    pick tmp = (*p)->next;
+    free(*p);
+    (*p)= tmp;
     return res;
 }
 
@@ -441,8 +443,8 @@ void FreePick(pick p)
 {
     if (!IsEmptyPick(p))
     {
-        free(p);
         pick tmp = p->next;
+        free(p);
         while (tmp != NULL)
         {
             pick q = tmp->next;
